@@ -62,7 +62,7 @@ public class PhonebookController {
 
     @PostMapping("/phonebook")
     public ResponseEntity<Phonebook> createPhonebook(@RequestBody Phonebook newPhonebook) {
-        Phonebook phonebook = phonebookRepository.save(new Phonebook(newPhonebook.getFirstName(), newPhonebook.getLastName(), newPhonebook.getPhoneNumber(), new Date()));
+        Phonebook phonebook = phonebookRepository.save(new Phonebook(newPhonebook.getFirstName(), newPhonebook.getLastName(), newPhonebook.getPhoneNumber(), new Date(), null));
         return new ResponseEntity<>(phonebook, HttpStatus.CREATED);
     }
 
@@ -102,3 +102,15 @@ public class PhonebookController {
     }
 }
 
+
+
+// database normalization rules 1-3
+
+
+// Add friends to phonebook
+// Each user can have multiple friends, user does not have to be friends mutually
+// Friends should be a list of ids of actual users
+// new endpoints /phonebook/id/friends POST, DELETE. Add friends and extend list, remove friends.
+// If one user is deleted it should also be deleted from everyones friendlist, will have to update phonebook/id @DELETE
+// Update /phonebook @GET will have to be updated to include and fetch friends of users?
+// Update phonebook/id @GET update to show all friends

@@ -1,12 +1,15 @@
 package se.daniel.apidemo.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
-@Table(name = "phonebook")
+@Table(name = "phonebook", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 public class Phonebook {
 
 	@Id
@@ -25,15 +28,22 @@ public class Phonebook {
 	@Column(name = "createdAt")
 	private Date createdAt;
 
+	@OneToMany(targetEntity = Item.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Column(name = "items", nullable = true)
+	@JsonManagedReference
+	private List <Item> items = null;
+
+
 	public Phonebook() {
 
 	}
 
-	public Phonebook(String firstName, String lastName, String phoneNumber, Date createdAt) {
+	public Phonebook(String firstName, String lastName, String phoneNumber, Date createdAt, List<Item> items) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;
 		this.createdAt = createdAt;
+		this.items = items;
 	}
 
 	public long getId() {
@@ -67,9 +77,19 @@ public class Phonebook {
 	public Date getCreatedAt() {
 		return createdAt;
 	}
+	
 
 	public void setCreatedAt() {
 		this.createdAt = new Date();
+	}
+
+	
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(Item item) {
+		items.add(item);
 	}
 	
 

@@ -15,5 +15,6 @@ public interface PhonebookRepository extends JpaRepository<Phonebook, Long> {
     List<Phonebook> findByPhoneNumber(String phoneNumber);
 
     List<Phonebook> findByFirstName(String firstName);
+
     
 }
