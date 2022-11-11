@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
-@Table(name = "phonebook", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
-public class Phonebook {
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,11 +34,11 @@ public class Phonebook {
 	private List <Item> items = null;
 
 
-	public Phonebook() {
+	public User() {
 
 	}
 
-	public Phonebook(String firstName, String lastName, String phoneNumber, Date createdAt, List<Item> items) {
+	public User(String firstName, String lastName, String phoneNumber, Date createdAt, List<Item> items) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;

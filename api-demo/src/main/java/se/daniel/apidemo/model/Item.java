@@ -5,7 +5,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "item", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+@Table(name = "items", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 public class Item {
     
     @Id
@@ -24,9 +24,9 @@ public class Item {
     @ManyToOne
     @JoinColumn(name="user_id")
     @JsonBackReference
-    private Phonebook user;
+    private User user;
 
-    public Item(String name, String description, Integer price, Phonebook user) {
+    public Item(String name, String description, Integer price, User user) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
@@ -37,11 +37,11 @@ public class Item {
 
     }
 
-    public Phonebook getUser() {
+    public User getUser() {
     return user;
     }
 
-    public void setUser(Phonebook user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import se.daniel.apidemo.model.Item;
-import se.daniel.apidemo.model.Phonebook;
+import se.daniel.apidemo.model.User;
 import se.daniel.apidemo.model.UpdateItem;
 import se.daniel.apidemo.repository.ItemRepository;
-import se.daniel.apidemo.repository.PhonebookRepository;
+import se.daniel.apidemo.repository.UserRepository;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,7 +31,7 @@ public class ItemController {
     ItemRepository itemRepository;
 
     @Autowired
-    PhonebookRepository phonebookRepository;
+    UserRepository userRepository;
     
 
     
@@ -97,23 +97,24 @@ public class ItemController {
             item.setName(updatedItem.getName());
         }
 
-        if (updatedItem.getDescription() != null) {
+        if (Objects.nonNull(updatedItem.getDescription())) {
             item.setDescription(updatedItem.getDescription());            
         }
 
-        if (updatedItem.getPrice() != null) {
+        if (Objects.nonNull(updatedItem.getPrice())) {
             item.setPrice(updatedItem.getPrice());
         }
 
         return ResponseEntity.ok(itemRepository.save(item));
     }
 
-    // add user to item. and add item to the user's list shoppingCart
+    // add user to item. and add item to the user's list of items
+    //items/itemId?uid=userId
     @PutMapping("/items/{id}")
     public ResponseEntity<Item> addUser(@PathVariable("id") long id, @RequestParam long uid) {
   
         Optional<Item> itemData = itemRepository.findById(id);
-        Optional<Phonebook> userData = phonebookRepository.findById(uid);
+        Optional<User> userData = userRepository.findById(uid);
 
         if (!itemData.isPresent() && !userData.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -128,5 +129,4 @@ public class ItemController {
         return ResponseEntity.ok(itemRepository.save(item));
 
     }
-    // only need id of user from the put request body, that will be added to the Item (user)
 }

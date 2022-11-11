@@ -2,7 +2,7 @@ package se.daniel.apidemo.model;
 
 import java.util.Date;
 
-public class UpdatePhonebook {
+public class UpdateUser {
 
 	private long id;
 	private String firstName = null;

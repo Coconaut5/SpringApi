@@ -6,7 +6,7 @@ public class UpdateItem {
     private String name = null;
     private String description = null;
     private Integer price = null;
-    private Phonebook user = null;
+    private User user = null;
 
     public long getId() {
         return id;
@@ -24,7 +24,7 @@ public class UpdateItem {
         return price;
     }
 
-    public Phonebook getUser() {
+    public User getUser() {
         return user;
         }
     
