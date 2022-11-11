@@ -73,6 +73,8 @@ public class ItemController {
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 
+
+    // Have to add delete item from user.itens List too
     @DeleteMapping("/items/{id}")
     public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") long id) {
         try {

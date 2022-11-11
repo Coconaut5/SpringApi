@@ -21,8 +21,8 @@ public class Item {
     @Column(name = "price")
     private Integer price;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name="user_id", nullable = true)
     @JsonBackReference
     private User user;
 

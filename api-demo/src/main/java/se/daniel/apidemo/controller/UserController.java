@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import se.daniel.apidemo.model.User;
+import se.daniel.apidemo.model.Item;
 import se.daniel.apidemo.model.UpdateUser;
+import se.daniel.apidemo.repository.ItemRepository;
 import se.daniel.apidemo.repository.UserRepository;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,9 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ItemRepository itemRepository;
     
 	@GetMapping("/users")
 	public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String firstName) {
@@ -66,9 +71,25 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
+    
+    
     @DeleteMapping("/users/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id) {
         try {
+            Optional<User> userData = userRepository.findById(id);
+           
+            if (userData.isPresent()) {
+                User user = userData.get();
+                List<Item> items = user.getItems();
+
+                for (int i = 0; i <items.size(); i++) {
+                    Item itemNull = items.get(i);
+                    itemNull.setUser(null);
+                    itemRepository.save(itemNull); 
+                 
+                }
+            }
+
             userRepository.deleteById(id);
             return ResponseEntity.ok(null);
         } catch (Exception e) {

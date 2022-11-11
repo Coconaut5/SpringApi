@@ -28,7 +28,9 @@ public class User {
 	@Column(name = "createdAt")
 	private Date createdAt;
 
-	@OneToMany(targetEntity = Item.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+	// quirk, if you remove a user the item is removed. We do not want that? We want the item to go back to items list with no user_id attached
+	@OneToMany(targetEntity = Item.class, mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.EAGER, orphanRemoval = false)
 	@Column(name = "items", nullable = true)
 	@JsonManagedReference
 	private List <Item> items = null;
