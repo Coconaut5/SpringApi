@@ -1,0 +1,22 @@
+[versions]
+spring = '2.7.5'
+gradleplugin = "7.5.1"
+
+[libraries]
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+
+postgresql = { module = "org.postgresql:postgresql" }
+
+[bundles]
+my-bundle = [
+"spring-boot-starter-web",
+"spring-boot-starter-data-jpa",
+"postgresql",
+]
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version = "2.7.5" }
+spring-dependency-managment-plugin = { id = "io.spring.dependency-management", version = "1.0.15.RELEASE" }
+java = { id = "java"}
