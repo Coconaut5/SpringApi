@@ -4,13 +4,13 @@ import java.util.Date;
 
 public class UpdateUser {
 
-	private long id;
+	private Long id;
 	private String firstName = null;
 	private String lastName = null;
 	private String phoneNumber = null;
 	private Date createdAt = null;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

@@ -1,8 +1,11 @@
 package se.daniel.apidemo.model;
 
+import java.util.Set;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "items", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
@@ -10,7 +13,7 @@ public class Item {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -23,14 +26,20 @@ public class Item {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name="user_id", nullable = true)
-    @JsonBackReference
+    @JsonBackReference(value="user_items")
     private User user;
 
-    public Item(String name, String description, Integer price, User user) {
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JsonManagedReference(value="category_items")
+    private Set<Category> categories;
+
+    public Item(String name, String description, Integer price, User user, Set<Category> categories) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.user = user;
+    this.categories = categories;
 	}
 
     public Item() {
@@ -45,7 +54,7 @@ public class Item {
         this.user = user;
     }
 
-    public long getId() {
+    public Long getId() {
     return id;
     }
 
@@ -73,6 +82,13 @@ public class Item {
 		this.price = price;
 	}
 
+  public Set<Category> getCategories() {
+    return categories;
+  }
+
+  public void setCategory(Category category) {
+    categories.add(category);
+  }
     
 }
 

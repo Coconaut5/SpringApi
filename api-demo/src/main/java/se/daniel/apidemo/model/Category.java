@@ -1,7 +1,58 @@
 package se.daniel.apidemo.model;
 
+import java.util.Set;
+
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+
+@Entity
+@Table(name = "categories", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 public class Category {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name ="name", unique = true)
+    private String name;
+
+
+
+    /// If you wanna delete a category you need to fix so that it removes relation to items, the other way around already works.
+    @ManyToMany(cascade = CascadeType.REFRESH , fetch = FetchType.EAGER)
+    @JoinTable
+    @JsonBackReference(value="category_items")
+    private Set <Item> items = null;
+
+    public Category() {}
+
+    public Category(String name, Set<Item> items) {
+        this.name = name;
+        this.items = items;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+        }
+    
+    public void setName(String name) {
+            this.name = name;
+    
+    }
+
+    public Set<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(Item item) {
+        items.add(item);
+    }
 }
 
 

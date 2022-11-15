@@ -2,13 +2,14 @@ package se.daniel.apidemo.model;
 
 public class UpdateItem {
 
-    private long id;
+    private Long id;
     private String name = null;
     private String description = null;
     private Integer price = null;
     private User user = null;
+    private Category category = null;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -27,5 +28,10 @@ public class UpdateItem {
     public User getUser() {
         return user;
         }
+
+    
+    public Category getCategory() {
+        return category;
+    }
     
 }

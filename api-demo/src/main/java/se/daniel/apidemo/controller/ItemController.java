@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import se.daniel.apidemo.model.Category;
 import se.daniel.apidemo.model.Item;
 import se.daniel.apidemo.model.User;
 import se.daniel.apidemo.model.UpdateItem;
+import se.daniel.apidemo.repository.CategoryRepository;
 import se.daniel.apidemo.repository.ItemRepository;
 import se.daniel.apidemo.repository.UserRepository;
 
@@ -32,6 +33,9 @@ public class ItemController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
     
 
     
@@ -69,7 +73,7 @@ public class ItemController {
 
     @PostMapping("/items")
     public ResponseEntity<Item> createItem(@RequestBody Item newItem) {
-        Item item = itemRepository.save(new Item(newItem.getName(), newItem.getDescription(), newItem.getPrice(), null));
+        Item item = itemRepository.save(new Item(newItem.getName(), newItem.getDescription(), newItem.getPrice(), null, null));
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 
@@ -86,9 +90,11 @@ public class ItemController {
     }
 
     @PutMapping("/items")
-    public ResponseEntity<Item> updateItem(@RequestBody UpdateItem updatedItem) {
+    public ResponseEntity updateItem(@RequestBody UpdateItem updatedItem) {
+       
         Optional<Item> itemData = itemRepository.findById(updatedItem.getId());
 
+        
         if (!itemData.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -105,6 +111,22 @@ public class ItemController {
 
         if (Objects.nonNull(updatedItem.getPrice())) {
             item.setPrice(updatedItem.getPrice());
+        }
+
+        if (Objects.nonNull(updatedItem.getCategory())) {
+            List<Category> categoryData = categoryRepository.findByName(updatedItem.getCategory().getName());
+
+            if(categoryData.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Category does not exist");
+            }
+
+            
+            
+            Category category = categoryData.get(0);
+    
+            item.setCategory(category);
+            
+            
         }
 
         return ResponseEntity.ok(itemRepository.save(item));

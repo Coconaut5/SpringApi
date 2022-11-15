@@ -14,7 +14,7 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
 	@Column(name = "firstName")
 	private String firstName;
@@ -28,11 +28,9 @@ public class User {
 	@Column(name = "createdAt")
 	private Date createdAt;
 
-
-	// quirk, if you remove a user the item is removed. We do not want that? We want the item to go back to items list with no user_id attached
 	@OneToMany(targetEntity = Item.class, mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.EAGER, orphanRemoval = false)
 	@Column(name = "items", nullable = true)
-	@JsonManagedReference
+	@JsonManagedReference(value="user_items")
 	private List <Item> items = null;
 
 
@@ -48,7 +46,7 @@ public class User {
 		this.items = items;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
